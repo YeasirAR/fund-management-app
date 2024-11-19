@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'providers/auth_provider.dart';
 import 'screens/login_screen.dart';
+import 'screens/reset_password_screen.dart';
 import 'screens/signup_screen.dart';
+import 'screens/forgot_password_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/verify_email_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,21 +13,23 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider()..tryAutoLogin()),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Fund Management App',
-        theme: ThemeData(primarySwatch: Colors.blue),
-        initialRoute: '/login',
-        routes: {
-          '/login': (context) => LoginScreen(),
-          '/signup': (context) => SignupScreen(),
-          '/dashboard': (context) => DashboardScreen(),
-        },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Fund Management App',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
       ),
+      // Define routes here
+      initialRoute: '/',
+      routes: {
+        '/': (context) => LoginScreen(),
+        '/login': (context) => LoginScreen(),
+        '/signup': (context) => SignupScreen(),
+        '/forgot-password': (context) => ForgotPasswordScreen(),
+        '/reset-password': (context) => ResetPasswordScreen(), // Add this
+        '/dashboard': (context) => DashboardScreen(),
+        '/verify-email': (context) => VerifyEmailScreen(),
+      },
     );
   }
 }

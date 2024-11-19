@@ -1,1 +1,1 @@
-const String apiBaseUrl = 'http://localhost:5000';
+const String apiBaseUrl = 'http://192.168.0.106:5000/api/auth';
