@@ -16,7 +16,11 @@ router.post('/register', async (req, res) => {
         }
 
         const user = new User({ name, email, password });
+        const verificationToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const verificationLink = `${req.protocol}://${req.get('host')}/api/auth/verify-email?token=${verificationToken}`;
         await user.save();
+        await sendEmail(email, 'Verify Your Email', `Click this link to verify your email: ${verificationLink}`);
+
         res.status(201).json({ message: 'User registered. Please verify your email.' });
     } catch (err) {
         console.error('Registration Error:', err);
@@ -24,20 +28,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
-
 // Verify Email
-router.post('/verify-email', async (req, res) => {
-    const { token } = req.body;
+router.get('/verify-email', async (req, res) => {
+    const { token } = req.query;
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
         const user = await User.findById(decoded.id);
         if (!user) return res.status(404).json({ error: 'User not found' });
-
         user.isVerified = true;
         await user.save();
 
         res.json({ message: 'Email verified successfully' });
     } catch (error) {
+        console.error('Verification Error:', error);
         res.status(500).json({ error: 'Invalid or expired token' });
     }
 });
@@ -51,12 +55,11 @@ router.post('/login', async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
-
         if (!user.isVerified) return res.status(400).json({ error: 'Email not verified' });
-
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.json({ token });
     } catch (error) {
+        console.error('Login Error:', error);
         res.status(500).json({ error: 'Login failed' });
     }
 });
