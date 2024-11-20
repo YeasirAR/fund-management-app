@@ -5,6 +5,9 @@ import 'screens/signup_screen.dart';
 import 'screens/forgot_password_screen.dart';
 import 'screens/dashboard_screen.dart';
 import 'screens/verify_email_screen.dart';
+import 'screens/deposit_screen.dart';
+import 'screens/withdraw_screen.dart';
+import 'screens/transfer_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +32,9 @@ class MyApp extends StatelessWidget {
         '/reset-password': (context) => ResetPasswordScreen(), // Add this
         '/dashboard': (context) => DashboardScreen(),
         '/verify-email': (context) => VerifyEmailScreen(),
+        '/deposit': (context) => DepositScreen(),
+        '/withdraw': (context) => WithdrawScreen(),
+        '/transfer': (context) => TransferScreen(),
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
+import '../utils/secure_storage_helper.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,28 +12,38 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  String? errorMessage; // For error messages
+  String? errorMessage; // To display error messages
   bool isLoading = false;
 
   void login() async {
     setState(() {
       isLoading = true;
-      errorMessage = null; // Clear error message
+      errorMessage = null; // Clear error messages before attempting login
     });
 
     try {
-      await AuthService.login(emailController.text, passwordController.text);
+      // Call login method from AuthService and retrieve the token
+      final token = await AuthService.login(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+
+      // Save token in secure storage
+      await SecureStorageHelper.write('authToken', token);
+
+      // Display success message and navigate to dashboard
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful!')),
       );
+
       Navigator.pushReplacementNamed(context, '/dashboard');
     } catch (e) {
       setState(() {
-        errorMessage = e.toString(); // Capture error message
+        errorMessage = e.toString(); // Capture and display error message
       });
     } finally {
       setState(() {
-        isLoading = false;
+        isLoading = false; // Reset loading state
       });
     }
   }
@@ -135,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: 24),
 
-              // Log In Button with Custom Design
+              // Log In Button
               ElevatedButton(
                 onPressed: isLoading ? null : login,
                 style: ElevatedButton.styleFrom(

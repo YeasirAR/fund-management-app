@@ -1,19 +1,23 @@
 import 'dart:convert';
-import 'package:fund_management_app/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import '../utils/constants.dart';
+import '../utils/secure_storage_helper.dart';
 
 class AuthService {
   static const String baseUrl = apiBaseUrl;
+
   // Login Method
   static Future<String> login(String email, String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/login'),
+      Uri.parse('$baseUrl/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)['token'];
+      final token = jsonDecode(response.body)['token'];
+      await SecureStorageHelper.write('authToken', token);
+      return token;
     } else {
       throw jsonDecode(response.body)['error'] ?? 'Login failed';
     }
@@ -22,7 +26,7 @@ class AuthService {
   // Signup Method
   static Future<void> signup(String name, String email, String password) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/register'),
+      Uri.parse('$baseUrl/auth/register'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'name': name, 'email': email, 'password': password}),
     );
@@ -35,7 +39,7 @@ class AuthService {
   // Verify Email Method
   static Future<void> verifyEmail(String email, String code) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/verify-email'),
+      Uri.parse('$baseUrl/auth/verify-email'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'code': code}),
     );
@@ -48,7 +52,7 @@ class AuthService {
   // Forgot Password Method
   static Future<void> forgotPassword(String email) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/forgot-password'),
+      Uri.parse('$baseUrl/auth/forgot-password'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email}),
     );
@@ -62,7 +66,7 @@ class AuthService {
   static Future<void> resetPassword(
       String email, String code, String newPassword) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/reset-password'),
+      Uri.parse('$baseUrl/auth/reset-password'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'email': email,
@@ -73,6 +77,77 @@ class AuthService {
 
     if (response.statusCode != 200) {
       throw jsonDecode(response.body)['error'] ?? 'Password reset failed';
+    }
+  }
+    // Get Dashboard Data
+  static Future<Map<String, dynamic>> getDashboardData() async {
+    final token = await SecureStorageHelper.read('authToken');
+    final response = await http.get(
+      Uri.parse('$baseUrl/dashboard'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token!,
+      },
+    );
+
+    print('API Response: ${response.statusCode} ${response.body}'); // Debug log
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw jsonDecode(response.body)['error'] ?? 'Failed to fetch dashboard data';
+    }
+  }
+
+
+  // Deposit Funds
+  static Future<void> deposit(double amount) async {
+    final token = await SecureStorageHelper.read('authToken');
+    final response = await http.post(
+      Uri.parse('$baseUrl/transaction/deposit'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'amount': amount}),
+    );
+
+    if (response.statusCode != 200) {
+      throw jsonDecode(response.body)['error'] ?? 'Deposit failed';
+    }
+  }
+
+  // Withdraw Funds
+  static Future<void> withdraw(double amount) async {
+    final token = await SecureStorageHelper.read('authToken');
+    final response = await http.post(
+      Uri.parse('$baseUrl/transaction/withdraw'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'amount': amount}),
+    );
+
+    if (response.statusCode != 200) {
+      throw jsonDecode(response.body)['error'] ?? 'Withdrawal failed';
+    }
+  }
+
+  // Transfer Funds
+  static Future<void> transfer(double amount, String recipientEmail) async {
+    final token = await SecureStorageHelper.read('authToken');
+    final response = await http.post(
+      Uri.parse('$baseUrl/transaction/transfer'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'amount': amount, 'recipientEmail': recipientEmail}),
+    );
+
+    if (response.statusCode != 200) {
+      throw jsonDecode(response.body)['error'] ?? 'Transfer failed';
     }
   }
 }
