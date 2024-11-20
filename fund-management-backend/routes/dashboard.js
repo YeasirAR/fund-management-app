@@ -18,6 +18,8 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
             .limit(10); // Fetch last 10 transactions
 
         res.json({
+            name : user.name,
+            email: user.email,
             currentBalance: user.currentBalance,
             availableBalance: user.availableBalance,
             transactions: transactions.map((transaction) => ({
@@ -25,7 +27,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
                 type: transaction.type,
                 amount: transaction.amount,
                 date: transaction.date,
-                recipient: transaction.recipient, // Optional for transfers
+                recipient: transaction.recipient,
             })),
         });
     } catch (error) {
