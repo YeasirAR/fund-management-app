@@ -117,6 +117,7 @@ class AuthService {
     }
   }
 
+
   // Withdraw Funds
   static Future<void> withdraw(double amount) async {
     final token = await SecureStorageHelper.read('authToken');
@@ -129,10 +130,13 @@ class AuthService {
       body: jsonEncode({'amount': amount}),
     );
 
-    if (response.statusCode != 200) {
-      throw jsonDecode(response.body)['error'] ?? 'Withdrawal failed';
+    if (response.statusCode == 400) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Invalid request');
+    } else if (response.statusCode != 200) {
+      throw Exception('Withdrawal failed');
     }
   }
+
 
   // Transfer Funds
   static Future<void> transfer(double amount, String recipientEmail) async {
@@ -146,8 +150,13 @@ class AuthService {
       body: jsonEncode({'amount': amount, 'recipientEmail': recipientEmail}),
     );
 
-    if (response.statusCode != 200) {
-      throw jsonDecode(response.body)['error'] ?? 'Transfer failed';
+    if (response.statusCode == 400) {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Invalid transfer request.');
+    } else if (response.statusCode == 404) {
+      throw Exception('Recipient not found.');
+    } else if (response.statusCode != 200) {
+      throw Exception('Transfer failed. Please try again.');
     }
   }
+
 }

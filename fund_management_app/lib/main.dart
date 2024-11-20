@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
+import 'screens/performance_chart_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/forgot_password_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/transactions_screen.dart';
 import 'screens/verify_email_screen.dart';
 import 'screens/deposit_screen.dart';
 import 'screens/withdraw_screen.dart';
@@ -35,6 +37,9 @@ class MyApp extends StatelessWidget {
         '/deposit': (context) => DepositScreen(),
         '/withdraw': (context) => WithdrawScreen(),
         '/transfer': (context) => TransferScreen(),
+        '/transactions': (context) => TransactionsScreen(),
+        '/performance-chart': (context) => PerformanceChartScreen(), // Add this
+
       },
     );
   }
