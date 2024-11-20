@@ -1,3 +1,4 @@
+
 # Fund Management App
 
 ## Overview
@@ -273,12 +274,4 @@ The **Fund Management App** is a comprehensive platform for users to manage thei
 
 ---
 
-## Contributions
 
-Feel free to fork this repository and contribute to improving the app. Submit a pull request with detailed explanations of your changes.
-
----
-
-## License
-
-This project is licensed under the MIT License.
