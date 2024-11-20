@@ -48,8 +48,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Verify Email'),
+        title: Text(
+          'Verify Email',
+          style: TextStyle(color: Colors.white), // White app bar text
+        ),
         backgroundColor: Color(0xFF6C63FF), // Modern Purple
+        iconTheme: IconThemeData(color: Colors.white), // White back icon
       ),
       backgroundColor: Color(0xFFF9FAFB),
       body: Padding(
@@ -100,7 +104,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   ? CircularProgressIndicator(color: Colors.white)
                   : Text(
                       'Verify',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
             ),
           ],

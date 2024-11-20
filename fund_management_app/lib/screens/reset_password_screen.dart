@@ -50,10 +50,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
-        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
+          'Reset Password',
+          style: TextStyle(color: Colors.white), // White app bar text
+        ),
+        iconTheme: IconThemeData(color: Colors.white), // White back icon
+        backgroundColor: Color(0xFF6C63FF), // Modern Purple
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFF9FAFB),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -65,7 +69,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Color(0xFF222222),
                 ),
               ),
               SizedBox(height: 8),
@@ -122,15 +126,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               ElevatedButton(
                 onPressed: isLoading ? null : () => resetPassword(email),
                 style: ElevatedButton.styleFrom(
-                  elevation: 6,
+                  elevation: 8,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   padding: EdgeInsets.symmetric(vertical: 16),
                   minimumSize: Size(double.infinity, 50),
-                  backgroundColor:
-                      isLoading ? Colors.grey : Theme.of(context).primaryColor,
-                  shadowColor: Colors.deepPurple.withOpacity(0.2),
+                  backgroundColor: Color(0xFF6C63FF), // Modern Purple
                 ),
                 child: isLoading
                     ? CircularProgressIndicator(
@@ -141,7 +143,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.white, // White button text
                         ),
                       ),
               ),

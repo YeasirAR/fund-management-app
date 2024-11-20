@@ -50,9 +50,9 @@ class _LoginScreenState extends State<LoginScreen> {
               // Logo Section
               Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12), // Subtle rounding
+                  borderRadius: BorderRadius.circular(16), // Rounded corners
                   child: Image.asset(
-                    'assets/images/logo.png', // Update this with your logo path
+                    'assets/images/logo.png', // Update with your logo path
                     height: 100,
                     fit: BoxFit.cover,
                   ),
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Color(0xFF1F1F1F),
                 ),
               ),
               SizedBox(height: 8),
@@ -83,17 +83,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.only(bottom: 16),
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.redAccent.withOpacity(0.1),
+                    color: Colors.red.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error_outline, color: Colors.redAccent),
+                      Icon(Icons.error_outline, color: Colors.red),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           errorMessage!,
-                          style: TextStyle(color: Colors.redAccent),
+                          style: TextStyle(color: Colors.red),
                         ),
                       ),
                     ],
@@ -127,43 +127,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text(
                     'Forgot Password?',
                     style: TextStyle(
-                      color: Theme.of(context).primaryColor,
+                      color: Color(0xFF6C63FF),
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ),
               SizedBox(height: 24),
 
-              // Log In Button with Gradient
+              // Log In Button with Custom Design
               ElevatedButton(
                 onPressed: isLoading ? null : login,
                 style: ElevatedButton.styleFrom(
-                  elevation: 6,
+                  elevation: 8,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding: EdgeInsets.symmetric(vertical: 16),
                   minimumSize: Size(double.infinity, 50),
-                  backgroundColor: null, // Gradient overrides this
-                  shadowColor: Colors.deepPurple.withOpacity(0.2),
+                  backgroundColor: Color(0xFF6C63FF),
                 ),
                 child: isLoading
-                    ? CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                    : ShaderMask(
-                        shaderCallback: (bounds) => LinearGradient(
-                          colors: [Color(0xFF6C63FF), Color(0xFF584DFF)],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ).createShader(bounds),
-                        child: Text(
-                          'Log In',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text(
+                        'Log In',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
               ),
@@ -181,7 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                        color: Color(0xFF6C63FF),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),

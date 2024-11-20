@@ -68,8 +68,13 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text(
+          'Sign Up',
+          style: TextStyle(color: Colors.white), // White text for AppBar
+        ),
+        iconTheme: IconThemeData(color: Colors.white), // White back arrow
         backgroundColor: Color(0xFF6C63FF), // Modern Purple
+        elevation: 0,
       ),
       backgroundColor: Color(0xFFF9FAFB),
       body: SingleChildScrollView(
@@ -151,7 +156,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   ? CircularProgressIndicator(color: Colors.white)
                   : Text(
                       'Sign Up',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // White button text
+                      ),
                     ),
             ),
             SizedBox(height: 20),
