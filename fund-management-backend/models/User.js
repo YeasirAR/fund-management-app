@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    currentBalance: { type: Number, default: 0 }, 
+    currentBalance: { type: Number, default: 100 }, 
     availableBalance: { type: Number, default: 0 }, 
     resetCode: { type: String },
     resetCodeExpiry: { type: Date },

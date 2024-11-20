@@ -61,12 +61,12 @@ router.post('/withdraw', authMiddleware, async (req, res) => {
         return res.status(404).json({ error: 'User not found' });
       }
   
-      if (user.currentBalance < amount) {
+      if (user.availableBalance < amount) {
         return res.status(400).json({ error: 'Insufficient balance' });
       }
   
       user.currentBalance -= parseFloat(amount);
-      user.availableBalance = user.currentBalance; // Assuming available balance mirrors current balance
+      user.availableBalance -= parseFloat(amount);
       await user.save();
   
       const transaction = new Transaction({
@@ -116,7 +116,7 @@ router.post('/transfer', authMiddleware, async (req, res) => {
             return res.status(404).json({ error: 'Recipient not found.' });
         }
 
-        if (sender.currentBalance < parseFloat(amount)) {
+        if (sender.availableBalance < parseFloat(amount)) {
             console.error(
                 `Transfer failed: Insufficient balance. Sender: ${sender.email}, Available: ${sender.currentBalance}, Requested: ${amount}`
             );
@@ -125,18 +125,27 @@ router.post('/transfer', authMiddleware, async (req, res) => {
 
         // Update balances
         sender.currentBalance -= parseFloat(amount);
+        sender.availableBalance -= parseFloat(amount);
         recipient.currentBalance += parseFloat(amount);
+        recipient.availableBalance += parseFloat(amount);
         await sender.save();
         await recipient.save();
 
         // Create transfer transaction
         const transaction = new Transaction({
             user: sender._id,
-            type: 'transfer',
+            type: 'Send Money',
             amount: parseFloat(amount),
             recipient: recipient._id,
         });
         await transaction.save();
+        const transaction2 = new Transaction({
+            user: recipient._id,
+            type: 'Receive Money',
+            amount: parseFloat(amount),
+            recipient: recipient._id,
+        });
+        await transaction2.save();
 
         console.log(
             `Transfer successful: Sender ${sender.email}, Recipient ${recipient.email}, Amount: $${amount}`

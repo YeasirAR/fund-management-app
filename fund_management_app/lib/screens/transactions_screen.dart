@@ -90,7 +90,8 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                           '\$${(transaction['amount'] ?? 0).toDouble().toStringAsFixed(2)}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: transaction['type'] == 'deposit'
+                            color: transaction['type'] == 'deposit' ||
+                                    transaction['type'] == 'Receive Money'
                                 ? Colors.green
                                 : Colors.red,
                           ),

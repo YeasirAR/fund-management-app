@@ -11,8 +11,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   double availableBalance = 0.0;
   bool isLoading = true;
   String errorMessage = "";
-  String userName = "User"; // Placeholder for user name
-  String userEmail = ""; // Placeholder for email
+  String userName = "User"; 
+  String userEmail = ""; 
 
   @override
   void initState() {
@@ -47,13 +47,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0xFF6C63FF),
+        iconTheme: IconThemeData(color: Colors.white), 
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: Colors.white),
-            onPressed: () {
-              // Handle logout logic here
-              Navigator.pushReplacementNamed(context, '/login');
-            },
+        icon: Icon(Icons.logout, color: Colors.white),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/login');
+        },
           ),
         ],
       ),

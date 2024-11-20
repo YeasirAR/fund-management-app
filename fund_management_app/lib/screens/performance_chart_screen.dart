@@ -30,7 +30,6 @@ class _PerformanceChartScreenState extends State<PerformanceChartScreen> {
         isLoading = false;
       });
 
-      // Debugging log
       print("Transaction Data: $transactionData");
     } catch (e) {
       setState(() {

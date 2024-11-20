@@ -18,7 +18,7 @@ class TransactionProvider with ChangeNotifier {
       String token, String type, double amount) async {
     try {
       await TransactionService.createTransaction(token, type, amount);
-      await fetchTransactions(token); // Refresh the list
+      await fetchTransactions(token); 
     } catch (e) {
       throw Exception('Failed to add transaction: $e');
     }
