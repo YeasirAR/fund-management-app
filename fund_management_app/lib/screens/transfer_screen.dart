@@ -18,17 +18,26 @@ class _TransferScreenState extends State<TransferScreen> {
     });
 
     try {
-      // Corrected parameter order
+      double amount = double.parse(amountController.text);
+      if (amount <= 0) {
+        throw Exception("Amount must be greater than zero.");
+      }
+      if (emailController.text.trim().isEmpty) {
+        throw Exception("Recipient email cannot be empty.");
+      }
+
       await AuthService.transfer(
-        double.parse(amountController.text), // Amount as double
-        emailController.text.trim(), // Recipient email
+        amount,
+        emailController.text.trim(),
       );
+
       Fluttertoast.showToast(
         msg: "Transfer successful!",
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
-      Navigator.pop(context); // Navigate back to the dashboard
+
+      Navigator.pop(context, true); // Pass true to refresh dashboard
     } catch (e) {
       Fluttertoast.showToast(
         msg: e.toString(),
@@ -46,8 +55,12 @@ class _TransferScreenState extends State<TransferScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Transfer Funds"),
-        backgroundColor: Color(0xFF6C63FF), // Modern Purple
+        title: Text(
+          "Transfer Funds",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF6C63FF),
+        iconTheme: IconThemeData(color: Colors.white), // Back button in white
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -67,7 +80,7 @@ class _TransferScreenState extends State<TransferScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: Icon(Icons.email),
+                prefixIcon: Icon(Icons.email, color: Color(0xFF6C63FF)),
               ),
             ),
             SizedBox(height: 24),
@@ -79,7 +92,7 @@ class _TransferScreenState extends State<TransferScreen> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                prefixIcon: Icon(Icons.attach_money),
+                prefixIcon: Icon(Icons.attach_money, color: Color(0xFF6C63FF)),
               ),
             ),
             SizedBox(height: 24),
@@ -96,7 +109,11 @@ class _TransferScreenState extends State<TransferScreen> {
                   ? CircularProgressIndicator(color: Colors.white)
                   : Text(
                       'Transfer',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Button text color white
+                      ),
                     ),
             ),
           ],

@@ -23,7 +23,9 @@ class _DepositScreenState extends State<DepositScreen> {
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
-      Navigator.pop(context); // Navigate back to the dashboard
+
+      // Navigate back to the dashboard and indicate that data needs to be refreshed
+      Navigator.pop(context, true); // Pass `true` to indicate success
     } catch (e) {
       Fluttertoast.showToast(
         msg: e.toString(),
@@ -41,8 +43,12 @@ class _DepositScreenState extends State<DepositScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Deposit Funds"),
+        title: Text(
+          "Deposit Funds",
+          style: TextStyle(color: Colors.white), // AppBar text color
+        ),
         backgroundColor: Color(0xFF6C63FF), // Modern Purple
+        iconTheme: IconThemeData(color: Colors.white), // Back button color
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -79,7 +85,11 @@ class _DepositScreenState extends State<DepositScreen> {
                   ? CircularProgressIndicator(color: Colors.white)
                   : Text(
                       'Deposit',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white, // Button text color
+                      ),
                     ),
             ),
           ],
